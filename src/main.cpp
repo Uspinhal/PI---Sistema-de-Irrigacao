@@ -30,7 +30,7 @@ const char* password = "*********";    // Senha da rede
 unsigned long lastCallTime = 0;                     // last time you called the updateWeather function, in milliseconds
 const unsigned long postingInterval = 60L * 1000L;  // delay between updates, in milliseconds
 
-String APIKEY = "8b2ac517646323d162ef59de28f81823";
+String APIKEY = "API_KEY";
 String NameOfCity = "Mogi Mirim";
 
 void printWifiStatus() 
