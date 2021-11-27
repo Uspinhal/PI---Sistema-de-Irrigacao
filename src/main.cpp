@@ -21,17 +21,22 @@ SISTEMA DE IRRIGAÇÃO AUTOMÁTICO COM ATUALIZAÇÃO PELA PREVISÃO DO TEMPO
 #define RAIN 3
 #define THUNDER 4
 
+
+// Definição de portas
+
+int port = 5; // Selecionando a porta de saída
+
 // Inicia o cliete de WiFi
 WiFiClient client;
 
 const char* ssid = "********";          // Nome da rede
-const char* password = "*********";    // Senha da rede
+const char* password = "*********";     // Senha da rede
 
 unsigned long lastCallTime = 0;                     // last time you called the updateWeather function, in milliseconds
 const unsigned long postingInterval = 60L * 1000L;  // delay between updates, in milliseconds
 
 String APIKEY = "API_KEY";
-String NameOfCity = "Mogi Mirim";
+String NameOfCity = "Nome da cidade";
 
 void printWifiStatus() 
 {
@@ -81,8 +86,6 @@ void updateWeather(){
     client.stop();    
 
 
-   
-
     // Imprime as respostas na porta serial
     Serial.println(F("Response:"));
     Serial.print("Weather: ");
@@ -93,8 +96,15 @@ void updateWeather(){
     Serial.println(weatherHumidity);
     Serial.println();
     
-    //char scrollText[15];
-    //sprintf(scrollText, "Humidity:%3d%%", weatherHumidity);
+    // Aciona a irrigação se não estiver chovendo
+    if (weatherId != "Rain")
+    {
+      // liga a irrigação por 10 minutos
+      digitalWrite(port, HIGH);
+      delay(600000); 
+      digitalWrite(port, LOW);
+    }
+    
     
   }
   else
@@ -107,6 +117,7 @@ void updateWeather(){
 void setup() {
   // put your setup code here, to run once:
 
+  pinMode(port, OUTPUT);
   Serial.begin(9600);
   Serial.println("\n\nOnline Weather Display\n");
 
